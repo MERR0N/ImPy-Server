@@ -1,5 +1,5 @@
 $(function(){
-  var host = 'dev.merron.ru';
+  var host = window.location.origin;
   var tpl = $('.working');
   $('#drop img').click(function(){
     $(this).parent().find('input').click();
@@ -34,7 +34,7 @@ $(function(){
     
     done: function(e, data){
       tpl.find('p').text(data.files[0].name);
-      $('#link').attr('value', 'http://'+host+'/'+data.result);
+      $('#link').attr('value', host+'/'+data.result);
       
     },
     
