@@ -1,0 +1,11 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>{% block title %}{% endblock %}</title>
+    <script src="http://code.jquery.com/jquery-2.1.1.min.js"></script>
+    <link rel="stylesheet" type="text/css" href="{{url_for('static',filename='css/main.css')}}">
+  </head>
+  <body>
+{% block body %}{% endblock %}
+  </body>
+</html>

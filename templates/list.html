@@ -1,0 +1,9 @@
+{% extends "layout.html" %}
+{% block title %}Gallery{% endblock %}
+{% block body %}
+{% for row in result %}
+    <div class="image">
+      <a href="/{{row[2]}}"><img src="/t/{{row[2]}}"></a>
+    </div>
+{% endfor %}
+{% endblock %}

@@ -1,0 +1,11 @@
+{% extends "layout.html" %}
+{% block title %}Welcome!{% endblock %}
+{% block body %}
+    <div id="welcome">
+      <img src="{{url_for('static',filename='img/logo.png')}}"><br><br>
+      <hr>
+      <a href="/upload">Upload</a>
+      <a href="/list/0b74f17c8b1d6e3ba9e24afea8be7de8">Gallery</a>
+      <a href="/download">Download</a><br>
+    </div>
+{% endblock %}

@@ -1,0 +1,31 @@
+{% extends "layout.html" %}
+{% block title %}Upload new image{% endblock %}
+{% block body %}
+   
+    <form action="/upload" method="post" enctype="multipart/form-data" id="upload">
+      <div id="drop">
+        <img src="{{url_for('static',filename='img/upload.png')}}">
+        <input type="file" name="file" accept="image/*">
+        <input type="text" name="key" value="0b74f17c8b1d6e3ba9e24afea8be7de8" hidden>
+      </div>
+      <ul>
+        <li class="working" >
+          <input type="text" value="0" data-width="48" data-height="48" data-fgColor="#0788a5" data-readOnly="1" data-bgColor="#3e4043" id="knob">
+          <p></p>
+          <span></span>
+          
+        </li>
+        <li>
+          <h2>Link:</h2>
+          <input type="text" id="link" value="" readonly="readonly">
+          <button id="copyButton"><img src="{{url_for('static',filename='img/link.png')}}"></button>
+        </li>
+      </ul>
+    </form>
+    <script src="{{url_for('static',filename='js/jquery.knob.js')}}"></script>
+    <script src="{{url_for('static',filename='js/jquery.ui.widget.js')}}"></script>
+    <script src="{{url_for('static',filename='js/jquery.iframe-transport.js')}}"></script>
+    <script src="{{url_for('static',filename='js/jquery.fileupload.js')}}"></script>
+    <script src="{{url_for('static',filename='js/script.js')}}"></script>
+    <script src="{{url_for('static',filename='js/ZeroClipboard.js')}}"></script>
+{% endblock %}
