@@ -4,16 +4,12 @@ $(function(){
   $('#select').click( function(e){
     if($('#select').hasClass('active')){
       $('#select').removeClass('active');
-      $('#all').hide();
-      $('#none').hide();
-      $('#delete').hide();
+      $('#all, #none, #delete').hide();
       selectMode = false;
 
     }else{
       $('#select').addClass('active');
-      $('#all').show();
-      $('#none').show();
-      $('#delete').show();
+      $('#all, #none, #delete').show();
       selectMode = true;
     }
     return false;
