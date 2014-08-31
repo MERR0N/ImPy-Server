@@ -5,12 +5,10 @@
 	padding: 0;
 	vertical-align: baseline;
 }
-
 body {
   background-color: #373a3d;
   font: 15px/1.3 Arial, sans-serif;
 }
-
 a, a:visited  {
   outline:none;
   color: #389dc1;
@@ -19,12 +17,54 @@ a, a:visited  {
   display: inline-block;
   margin-left: 7px;
   width: 90px;
+  cursor: pointer;
 }
-
 a:hover {
   color: #FFFFFF;
 }
-
+#menu,
+#menu ul,
+#menu ul li,
+#menu ul li a {
+  margin: 0;
+  padding: 0;
+  border: 0;
+  list-style: none;
+  line-height: 1;
+  position: relative;
+  -webkit-box-sizing: border-box;
+  -moz-box-sizing: border-box;
+  box-sizing: border-box;
+}
+#menu {
+  border-bottom: 3px solid #333333;
+  padding: 0 5px;
+  width: auto;
+  font-family: Helvetica, Arial, sans-serif;
+  background: #dddddd;
+  border-top-left-radius: 3px;
+  border-top-right-radius: 3px;
+}
+#menu ul li {
+  display: inline-block;
+}
+#menu.align-right ul li {
+  float: right;
+}
+#menu.align-center ul {
+  text-align: center;
+}
+#menu ul li a {
+  font-size: 14px;
+  padding: 15px;
+  text-decoration: none;
+  color: #0e83cd;
+}
+#menu ul li:hover a,
+#menu ul li a:hover,
+#menu ul li a.active {
+  color: #333333;
+}
 #welcome {
   background-image: -webkit-linear-gradient(top, #373a3d, #313437);
   background-image: -moz-linear-gradient(top, #373a3d, #313437);
@@ -35,46 +75,43 @@ a:hover {
   margin: 200px auto 100px;
   box-shadow: 0 0 10px rgba(0, 0, 0, 0.3);
 }
-
 #welcome img {
   height: 300px;
 }
-
 .image {
   width: 210px;
   height: 210px;
   padding: 10px 5px;
   float: left;
 }
-
 .image img:hover {
   border: 5px solid #389dc1;
 }
-
+.selected {
+  border: 5px solid #389dc1;
+}
+#all, #none, #delete {
+  display: none;
+}
 #e404 {
   font-family: "Helvetica Neue";
   font-size: 404px;
   color: #389dc1;
   margin: auto 60%;
 }
-
 #knob {
   display: none;
 }
-
 #link {
   width: 300px;
   font-size: 20px;
 }
-
 #link::selection {
   background: #85BF25;
 }
-
 #link:focus {
   border: 2px solid #389dc1;
 }
-
 #drop {
   background-color: #2E3134;
   padding: 40px 50px;
@@ -89,15 +126,12 @@ a:hover {
   font-weight: bold;
   color: #7f858a;
 }
-
 #drop input {
   display: none;
 }
-
 #drop img {
   cursor: pointer;
 }
-
 #upload {
   background-image: -webkit-linear-gradient(top, #373a3d, #313437);
   background-image: -moz-linear-gradient(top, #373a3d, #313437);
@@ -108,7 +142,6 @@ a:hover {
   margin: 200px auto 100px;
   box-shadow: 0 0 10px rgba(0, 0, 0, 0.3);
 }
-
 #upload ul {
   list-style: none;
   margin: 0 -30px;
@@ -116,7 +149,6 @@ a:hover {
   border-bottom: 1px solid #3d4043;
   display: none;
 }
-
 #upload ul li {
   background-color: #333639;
   background-image: -webkit-linear-gradient(top, #333639, #303335);
@@ -128,7 +160,6 @@ a:hover {
   height: 52px;
   position: relative;
 }
-
 #upload ul li p {
   width: 144px;
   overflow: hidden;
@@ -140,20 +171,17 @@ a:hover {
   top: 20px;
   left: 100px;
 }
-
 #upload ul li i {
   font-weight: normal;
   font-style: normal;
   color: #7f7f7f;
   display: block;
 }
-
 #upload ul li canvas {
   top: 15px;
   left: 32px;
   position: absolute;
 }
-
 #upload ul li span {
   width: 15px;
   height: 12px;
@@ -163,12 +191,10 @@ a:hover {
   right: 33px;
   cursor:pointer;
 }
-
 #upload ul li.working span {
   height: 16px;
   background-position: 0 -12px;
 }
-
 #upload ul li.error p {
   color: red;
 }

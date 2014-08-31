@@ -1,9 +1,25 @@
 {% extends "layout.html" %}
 {% block title %}Gallery{% endblock %}
 {% block body %}
-{% for row in result %}
-    <div class="image">
-      <a href="/{{row[2]}}"><img src="/t/{{row[2]}}"></a>
+
+    <script>
+      var userkey = '{{userkey}}';
+    </script>
+    
+    <div id="menu">
+      <ul>
+        <li><a id="select"><span>Select</span></a></li>
+        <li><a id="all"><span>All</span></a></li>
+        <li><a id="none"><span>None</span></a></li>
+        <li><a id="delete"><span>Delete</span></a></li>
+      </ul>
     </div>
+    <div id="gallery">
+{% for row in result %}
+      <div class="image">
+        <a href="/{{row[2]}}"><img src="/t/{{row[2]}}"></a>
+      </div>
 {% endfor %}
+    </div>
+    <script src="{{url_for('static',filename='js/gallery.js')}}"></script>
 {% endblock %}

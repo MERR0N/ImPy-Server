@@ -5,8 +5,9 @@ from flask import Flask, request, render_template, send_file
 sqlite = sqlite3.connect('server.db3', check_same_thread=False)
 sqlcur = sqlite.cursor()
 
-UPLOAD_FOLDER = './uploads'
-THUMB_FOLDER = './uploads/t'
+UPLOAD_FOLDER = './uploads' # folder for uploads
+THUMB_FOLDER = './uploads/t' # folder for thumbnails
+
 ALLOWED_EXTENSIONS = set(['png', 'jpg', 'jpeg', 'gif'])
 
 app = Flask(__name__)
@@ -57,7 +58,7 @@ def list_files(userkey):
   sqlcur.execute('SELECT * FROM "main"."pic" WHERE key = ?',(userkey,))
   result = sqlcur.fetchall()
   if(result):
-    return render_template('list.html', result=result)
+    return render_template('list.html', result=result, userkey=userkey)
   return render_template('404.html'), 404  
 
 @app.route('/mlist/<userkey>')
@@ -76,6 +77,7 @@ def delete_file(userkey,filename):
   sqlcur.execute('DELETE FROM "main"."pic" WHERE key = ? AND name = ?',(userkey,filename))
   sqlite.commit()
   os.remove(os.path.join(app.config['UPLOAD_FOLDER'], filename))
+  os.remove(os.path.join(app.config['THUMB_FOLDER'], filename))
   return 'ok'
 
 @app.errorhandler(404)
