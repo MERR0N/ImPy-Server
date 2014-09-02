@@ -7,12 +7,15 @@ sqlcur = sqlite.cursor()
 
 UPLOAD_FOLDER = './uploads' # folder for uploads
 THUMB_FOLDER = './uploads/t' # folder for thumbnails
+GALLERY = '0b74f17c8b1d6e3ba9e24afea8be7de8' # id for public gallery
+
 
 ALLOWED_EXTENSIONS = set(['png', 'jpg', 'jpeg', 'gif'])
 
 app = Flask(__name__)
 app.config['UPLOAD_FOLDER'] = UPLOAD_FOLDER
 app.config['THUMB_FOLDER'] = THUMB_FOLDER
+app.config['GALLERY'] = GALLERY
 
 def allowed_file(filename):
   return '.' in filename and \
@@ -43,7 +46,10 @@ def upload_file():
   if request.method == 'POST':
     file = request.files['file']
     if file and allowed_file(file.filename) and request.form['key']:
-      key = request.form['key']
+      if request.form['key']!='public':
+        key = request.form['key']
+      else:
+        key = app.config['GALLERY']
       filename = md5.new(str(random.random())+key).hexdigest()[:16]+"."+file.filename.rsplit('.', 1)[1]
       sqlcur.execute('INSERT INTO "main"."pic" ("key", "name") VALUES (?, ?)',(key, filename))
       sqlite.commit()
@@ -70,6 +76,14 @@ def mlist_files(userkey):
     for row in result:
       list += row[2]+":"
     return list.rstrip()
+  return render_template('404.html'), 404  
+
+@app.route('/gallery')
+def gallery():
+  sqlcur.execute('SELECT * FROM "main"."pic" WHERE key = ?',(app.config['GALLERY'],))
+  result = sqlcur.fetchall()
+  if(result):
+    return render_template('list.html', result=result, userkey='public')
   return render_template('404.html'), 404  
 
 @app.route('/del/<userkey>/<filename>')

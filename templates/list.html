@@ -1,11 +1,10 @@
 {% extends "layout.html" %}
 {% block title %}Gallery{% endblock %}
 {% block body %}
-
+{% if userkey != 'public' %}
     <script>
       var userkey = '{{userkey}}';
     </script>
-    
     <div id="menu">
       <ul>
         <li><a id="select"><span>Select</span></a></li>
@@ -14,6 +13,7 @@
         <li><a id="delete"><span>Delete</span></a></li>
       </ul>
     </div>
+{% endif %}
     <div id="gallery">
 {% for row in result %}
       <div class="image">
