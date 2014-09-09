@@ -22,6 +22,7 @@ def allowed_file(filename):
     filename.rsplit('.', 1)[1] in ALLOWED_EXTENSIONS
 
 @app.route('/')
+@app.route('/index')
 def welcome():
   return render_template('welcome.html')
 
