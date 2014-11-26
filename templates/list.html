@@ -2,24 +2,31 @@
 {% block title %}Gallery{% endblock %}
 {% block body %}
 {% if userkey != 'public' %}
-    <script>
-      var userkey = '{{userkey}}';
-    </script>
-    <div id="menu">
-      <ul>
-        <li><a id="select"><span>Select</span></a></li>
-        <li><a id="all"><span>All</span></a></li>
-        <li><a id="none"><span>None</span></a></li>
-        <li><a id="delete"><span>Delete</span></a></li>
-      </ul>
-    </div>
-{% endif %}
-    <div id="gallery">
-{% for row in result %}
-      <div class="image">
-        <a href="/{{row[2]}}"><img src="/t/{{row[2]}}"></a>
+      <script>
+        var userkey = '{{userkey}}';
+      </script>
+      <div id="menu">
+        <ul>
+          <li><a class="url" id="select"><span>Select</span></a></li>
+          <li><a class="url" id="all"><span>All</span></a></li>
+          <li><a class="url" id="none"><span>None</span></a></li>
+          <li><a class="url" id="delete"><span>Delete</span></a></li>
+        </ul>
       </div>
+{% endif %}
+      <div id="gallery">
+        <div class="pages">
+{% for page in range(1,count_page) %}  
+          <a href="/list/{{userkey}}/{{page}}/">{{page}}</a>
 {% endfor %}
-    </div>
-    <script src="{{url_for('static',filename='js/gallery.js')}}"></script>
+        </div>
+{% for row in result %}
+        <div class="image">
+          <div class="image-info">Просмотров: {{row[3]}}</div>
+          <a href="/{{row[2]}}"><img src="/t/{{row[2]}}"></a>
+        </div>
+{% endfor %}
+        <div style="clear:both"></div>
+      </div>
+      <script src="{{url_for('static',filename='js/gallery.js')}}"></script>
 {% endblock %}

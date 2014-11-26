@@ -9,7 +9,10 @@ body {
   background-color: #373a3d;
   font: 15px/1.3 Arial, sans-serif;
 }
-a, a:visited  {
+#content{
+  display:block;
+}
+.url, .url:visited  {
   outline:none;
   color: #389dc1;
   text-decoration: none;
@@ -19,7 +22,7 @@ a, a:visited  {
   width: 90px;
   cursor: pointer;
 }
-a:hover {
+#url:hover {
   color: #FFFFFF;
 }
 #menu,
@@ -79,25 +82,52 @@ a:hover {
   height: 300px;
 }
 .image {
-  width: 210px;
-  height: 210px;
-  padding: 10px 5px;
+  position: relative;
+  width: 200px;
+  height: 200px;
+  border-color: transparent;
+  border-width: 5px 5px;
   float: left;
+  border-style: solid;
+  margin-left: 10px;
+  margin-top: 10px;
 }
-.image img:hover {
-  border: 5px solid #389dc1;
+.image-info {
+  text-align: center;
+  display: none;
+  background-color: rgba(0,0,0,.7);
+  position: absolute;
+  bottom: 0;
+  width: 200px;
+  height: 50px;  
+  color: white;
+}
+.image:hover .image-info {
+  display: block;
+}
+.image:hover {
+  border-color: #389dc1;
 }
 .selected {
   border: 5px solid #389dc1;
+}
+.pages a{
+  font-size: 14px;
+  padding: 5px;
+  text-decoration: none;
+  color: #0e83cd;
+}
+.pages {
+  height: 15px;
 }
 #all, #none, #delete {
   display: none;
 }
 #e404 {
   font-family: "Helvetica Neue";
-  font-size: 404px;
+  font-size: 200px;
   color: #389dc1;
-  margin: auto 60%;
+  margin: auto 40%;
 }
 #knob {
   display: none;

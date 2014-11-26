@@ -1,6 +1,7 @@
 import os, sqlite3, md5, random
 from PIL import Image, ImageOps
 from flask import Flask, request, render_template, send_file
+from puush import puush
 
 sqlite = sqlite3.connect('server.db3', check_same_thread=False)
 sqlcur = sqlite.cursor()
@@ -16,6 +17,7 @@ app = Flask(__name__)
 app.config['UPLOAD_FOLDER'] = UPLOAD_FOLDER
 app.config['THUMB_FOLDER'] = THUMB_FOLDER
 app.config['GALLERY'] = GALLERY
+app.register_blueprint(puush)
 
 def allowed_file(filename):
   return '.' in filename and \
@@ -30,6 +32,8 @@ def welcome():
 def img(file):
   file_path = os.path.join(app.config['UPLOAD_FOLDER'], file)
   if os.path.isfile(file_path):
+    sqlcur.execute('UPDATE "main"."pic" SET views = views + 1 WHERE name = ?',(file,))
+    sqlite.commit()
     return send_file(file_path, mimetype='image')
   else: 
     return render_template('404.html'), 404
@@ -60,15 +64,21 @@ def upload_file():
   else:
     return render_template("upload.html")
     
-@app.route('/list/<userkey>')
-def list_files(userkey):
-  sqlcur.execute('SELECT * FROM "main"."pic" WHERE key = ?',(userkey,))
+@app.route('/list/<userkey>/')
+@app.route('/list/<userkey>/<int:page>/')
+def list_files(userkey, page=0, pfrom = 0, pto = 40):
+  if (page > 0): pfrom = (page - 1)*pto
+  sqlcur.execute('SELECT count(*) FROM "main"."pic" WHERE key = ?',(userkey,))
+  count_pic = sqlcur.fetchall()
+  count_page = (count_pic[0][0]//pto)+2
+  
+  sqlcur.execute('SELECT * FROM "main"."pic" WHERE key = ? LIMIT ?,?',(userkey,pfrom,pto))
   result = sqlcur.fetchall()
   if(result):
-    return render_template('list.html', result=result, userkey=userkey)
+    return render_template('list.html', result=result, userkey=userkey, count_page = count_page)
   return render_template('404.html'), 404  
 
-@app.route('/mlist/<userkey>')
+@app.route('/mlist/<userkey>/')
 def mlist_files(userkey):
   sqlcur.execute('SELECT * FROM "main"."pic" WHERE key = ?',(userkey,))
   result = sqlcur.fetchall()
@@ -79,12 +89,17 @@ def mlist_files(userkey):
     return list.rstrip()
   return render_template('404.html'), 404  
 
-@app.route('/gallery')
-def gallery():
-  sqlcur.execute('SELECT * FROM "main"."pic" WHERE key = ?',(app.config['GALLERY'],))
+@app.route('/gallery/')
+def gallery(page=0, pfrom = 0, pto = 50):
+  if (page > 0): pfrom = (page - 1)*pto
+  sqlcur.execute('SELECT count(*) FROM "main"."pic" WHERE key = ?',(app.config['GALLERY'],))
+  count_pic = sqlcur.fetchall()
+  count_page = count_pic[0][0]//pto
+  
+  sqlcur.execute('SELECT * FROM "main"."pic" WHERE key = ? LIMIT ?,?',(app.config['GALLERY'],pfrom,pto))
   result = sqlcur.fetchall()
   if(result):
-    return render_template('list.html', result=result, userkey='public')
+    return render_template('list.html', result=result, userkey='public',count_page = count_page)
   return render_template('404.html'), 404  
 
 @app.route('/del/<userkey>/<filename>')
@@ -105,4 +120,4 @@ def thumbnail(filename):
     ImageOps.fit(Image.open(file_path), (200,200), Image.ANTIALIAS).save(os.path.join(app.config['THUMB_FOLDER'], filename))
 
 if __name__ == "__main__":
-  app.run(host='0.0.0.0',port=80)
+  app.run(host='localhost',port=3000)
