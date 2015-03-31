@@ -1,8 +1,8 @@
 import os, sqlite3, md5, random
 from PIL import Image, ImageOps
-from flask import Flask, request, render_template, send_file
+from flask import Flask, request, render_template, send_file, redirect
 
-host = "http://img.merron.ru/" # change to you server
+host = "http://i.merron.ru/"  # change to you server
 sqlite = sqlite3.connect('server.db3', check_same_thread=False)
 sqlcur = sqlite.cursor()
 
@@ -33,7 +33,7 @@ def img(file):
   if os.path.isfile(file_path):
     sqlcur.execute('UPDATE "main"."pic" SET views = views + 1 WHERE name = ?',(file,))
     sqlite.commit()
-    return send_file(file_path, mimetype='image')
+    return send_file(file_path, mimetype='image/jpg')
   else: 
     return render_template('404.html'), 404
     
@@ -41,7 +41,7 @@ def img(file):
 def thumbimg(file):
   file_path = os.path.join(app.config['THUMB_FOLDER'], file)
   if os.path.isfile(file_path):
-    return send_file(file_path, mimetype='image')
+    return send_file(file_path, mimetype='image/jpg')
   else: 
     return render_template('404.html'), 404
     
@@ -54,7 +54,7 @@ def upload_file():
         key = request.form['key']
       else:
         key = app.config['GALLERY']
-      filename = md5.new(str(random.random())+key).hexdigest()[:16]+"."+file.filename.rsplit('.', 1)[1]
+      filename = md5.new(str(random.random())+key).hexdigest()[:6]+"."+file.filename.rsplit('.', 1)[1]
       sqlcur.execute('INSERT INTO "main"."pic" ("key", "name") VALUES (?, ?)',(key, filename))
       sqlite.commit()
       file.save(os.path.join(app.config['UPLOAD_FOLDER'], filename))
@@ -145,7 +145,7 @@ def puushup():
         key = request.form['k']
       else:
         key = app.config['GALLERY']
-      filename = md5.new(str(random.random())+key).hexdigest()[:16]+"."+file.filename.rsplit('.', 1)[1]
+      filename = md5.new(str(random.random())+key).hexdigest()[:6]+"."+file.filename.rsplit('.', 1)[1]
       sqlcur.execute('INSERT INTO "main"."pic" ("key", "name") VALUES (?, ?)',(key, filename))
       sqlite.commit()
       file.save(os.path.join(app.config['UPLOAD_FOLDER'], filename))
@@ -153,7 +153,14 @@ def puushup():
       return "0,"+host+filename+",190529312,0"
   else:
     return render_template("upload.html")
+
+@app.route('/login/go/', methods=['GET', 'POST'])
+def puushlogin():
+  if request.args.get('k')!='':
+    key = request.args.get('k')
+    return redirect(host+"/list/"+key)
+  return render_template('404.html'), 404  
 ###    
-    
+   
 if __name__ == "__main__":
   app.run(host='localhost',port=3000)
