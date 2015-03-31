@@ -33,7 +33,7 @@ def img(file):
   if os.path.isfile(file_path):
     sqlcur.execute('UPDATE "main"."pic" SET views = views + 1 WHERE name = ?',(file,))
     sqlite.commit()
-    return send_file(file_path, mimetype='image/jpg')
+    return send_file(file_path, mimetype='image/jpeg')
   else: 
     return render_template('404.html'), 404
     
@@ -41,7 +41,7 @@ def img(file):
 def thumbimg(file):
   file_path = os.path.join(app.config['THUMB_FOLDER'], file)
   if os.path.isfile(file_path):
-    return send_file(file_path, mimetype='image/jpg')
+    return send_file(file_path, mimetype='image/jpeg')
   else: 
     return render_template('404.html'), 404
     
