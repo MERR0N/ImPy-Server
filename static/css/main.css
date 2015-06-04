@@ -9,6 +9,9 @@ body {
   background-color: #373a3d;
   font: 15px/1.3 Arial, sans-serif;
 }
+h2{
+  color: white;
+}
 #content{
   display:block;
 }
@@ -135,6 +138,7 @@ body {
 #link {
   width: 300px;
   font-size: 20px;
+    color: white;
 }
 #link::selection {
   background: #85BF25;
@@ -155,12 +159,16 @@ body {
   font-size: 16px;
   font-weight: bold;
   color: #7f858a;
+  width: 360px;
 }
 #drop input {
   display: none;
 }
-#drop img {
+#drop div {
   cursor: pointer;
+  background-image: url('../img/upload.png');
+  height: 300px;
+  margin-left: 30px;
 }
 #upload {
   background-image: -webkit-linear-gradient(top, #373a3d, #313437);

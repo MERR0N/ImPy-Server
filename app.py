@@ -34,17 +34,17 @@ def img(file):
     sqlcur.execute('UPDATE "main"."pic" SET views = views + 1 WHERE name = ?',(file,))
     sqlite.commit()
     return send_file(file_path, mimetype='image/jpeg')
-  else: 
+  else:
     return render_template('404.html'), 404
-    
+
 @app.route('/t/<file>')
 def thumbimg(file):
   file_path = os.path.join(app.config['THUMB_FOLDER'], file)
   if os.path.isfile(file_path):
     return send_file(file_path, mimetype='image/jpeg')
-  else: 
+  else:
     return render_template('404.html'), 404
-    
+
 @app.route('/upload', methods=['GET', 'POST'])
 def upload_file():
   if request.method == 'POST':
@@ -62,7 +62,7 @@ def upload_file():
       return filename
   else:
     return render_template("upload.html")
-    
+
 @app.route('/list/<userkey>/')
 @app.route('/list/<userkey>/<int:page>/')
 def list_files(userkey, page=0, pfrom = 0, pto = 40):
@@ -70,12 +70,12 @@ def list_files(userkey, page=0, pfrom = 0, pto = 40):
   sqlcur.execute('SELECT count(*) FROM "main"."pic" WHERE key = ?',(userkey,))
   count_pic = sqlcur.fetchall()
   count_page = (count_pic[0][0]//pto)+2
-  
+
   sqlcur.execute('SELECT * FROM "main"."pic" WHERE key = ? LIMIT ?,?',(userkey,pfrom,pto))
   result = sqlcur.fetchall()
   if(result):
     return render_template('list.html', result=result, userkey=userkey, count_page = count_page)
-  return render_template('404.html'), 404  
+  return render_template('404.html'), 404
 
 @app.route('/mlist/<userkey>/')
 def mlist_files(userkey):
@@ -86,7 +86,7 @@ def mlist_files(userkey):
     for row in result:
       list += row[2]+":"
     return list.rstrip()
-  return render_template('404.html'), 404  
+  return render_template('404.html'), 404
 
 @app.route('/gallery/')
 def gallery(page=0, pfrom = 0, pto = 50):
@@ -94,12 +94,12 @@ def gallery(page=0, pfrom = 0, pto = 50):
   sqlcur.execute('SELECT count(*) FROM "main"."pic" WHERE key = ?',(app.config['GALLERY'],))
   count_pic = sqlcur.fetchall()
   count_page = count_pic[0][0]//pto
-  
+
   sqlcur.execute('SELECT * FROM "main"."pic" WHERE key = ? LIMIT ?,?',(app.config['GALLERY'],pfrom,pto))
   result = sqlcur.fetchall()
   if(result):
     return render_template('list.html', result=result, userkey='public',count_page = count_page)
-  return render_template('404.html'), 404  
+  return render_template('404.html'), 404
 
 @app.route('/del/<userkey>/<filename>')
 def delete_file(userkey,filename):
@@ -111,7 +111,7 @@ def delete_file(userkey,filename):
 
 @app.errorhandler(404)
 def not_found(error):
-  return render_template('404.html'), 404  
+  return render_template('404.html'), 404
 
 def thumbnail(filename):
   file_path = os.path.join(app.config['UPLOAD_FOLDER'], filename)
@@ -119,7 +119,7 @@ def thumbnail(filename):
     ImageOps.fit(Image.open(file_path), (200,200), Image.ANTIALIAS).save(os.path.join(app.config['THUMB_FOLDER'], filename))
 
 ###
-    
+
 @app.route('/api/auth', methods=['GET', 'POST'])
 def puushauth():
   return "0,%s,,0" % request.form['k']
@@ -134,8 +134,8 @@ def puushhist():
     for row in result:
         list += str(row[0])+","+str(datetime.datetime.fromtimestamp(int(row[4])).strftime('%Y-%m-%d %H:%M:%S'))+","+str(host)+str(row[2])+","+str(row[2])+","+str(row[3])+",0\n"
         return list
-  return ""  
-  
+  return ""
+
 @app.route('/api/up', methods=['GET', 'POST'])
 def puushup():
   if request.method == 'POST':
@@ -159,8 +159,8 @@ def puushlogin():
   if request.args.get('k')!='':
     key = request.args.get('k')
     return redirect(host+"/list/"+key)
-  return render_template('404.html'), 404  
-###    
-   
+  return render_template('404.html'), 404
+###
+
 if __name__ == "__main__":
   app.run(host='localhost',port=3000)

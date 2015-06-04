@@ -1,7 +1,7 @@
 (function(){
   var tpl = $('.working');
   
-  $('#drop img').click(function(){
+  $('#drop div').click(function(){
     $(this).parent().find('input').click();
   });
   $('#copyButton').click( function(e){
