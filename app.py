@@ -71,7 +71,7 @@ def list_files(userkey, page=0, pfrom = 0, pto = 40):
   count_pic = sqlcur.fetchall()
   count_page = (count_pic[0][0]//pto)+2
 
-  sqlcur.execute('SELECT * FROM "main"."pic" WHERE key = ? LIMIT ?,?',(userkey,pfrom,pto))
+  sqlcur.execute('SELECT * FROM "main"."pic" WHERE key = ? ORDER BY id DESC LIMIT ?,?',(userkey,pfrom,pto))
   result = sqlcur.fetchall()
   if(result):
     return render_template('list.html', result=result, userkey=userkey, count_page = count_page)
@@ -79,7 +79,7 @@ def list_files(userkey, page=0, pfrom = 0, pto = 40):
 
 @app.route('/mlist/<userkey>/')
 def mlist_files(userkey):
-  sqlcur.execute('SELECT * FROM "main"."pic" WHERE key = ?',(userkey,))
+  sqlcur.execute('SELECT * FROM "main"."pic" WHERE key = ? ORDER BY id DESC',(userkey,))
   result = sqlcur.fetchall()
   if(result):
     list = ""
@@ -95,7 +95,7 @@ def gallery(page=0, pfrom = 0, pto = 50):
   count_pic = sqlcur.fetchall()
   count_page = count_pic[0][0]//pto
 
-  sqlcur.execute('SELECT * FROM "main"."pic" WHERE key = ? LIMIT ?,?',(app.config['GALLERY'],pfrom,pto))
+  sqlcur.execute('SELECT * FROM "main"."pic" WHERE key = ? ORDER BY id DESC LIMIT ?,?',(app.config['GALLERY'],pfrom,pto))
   result = sqlcur.fetchall()
   if(result):
     return render_template('list.html', result=result, userkey='public',count_page = count_page)
