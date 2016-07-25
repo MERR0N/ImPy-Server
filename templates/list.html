@@ -22,8 +22,8 @@
         </div>
 {% for row in result %}
         <div class="image">
-          <div class="image-info">Просмотров: {{row[3]}}</div>
-          <a href="/{{row[2]}}"><img src="/t/{{row[2]}}"></a>
+          <div class="image-info">Просмотров: {{row.views}}</div>
+          <a href="/{{row.name}}"><img src="/t/{{row.name}}"></a>
         </div>
 {% endfor %}
         <div style="clear:both"></div>
